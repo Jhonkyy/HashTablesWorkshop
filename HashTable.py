@@ -52,6 +52,17 @@ class HashTable:
         value *= 401
         return value % self.size
 
+    def my_personal(self,key):
+        encoded_key = key.encode()
+        value = 0
+        value_2 = 0
+        for ch in encoded_key:
+            value += ch
+            value_2 ^= ch
+        value = int(value_2 // (70/ self.size))
+        return value % self.size
+
+
 
     def __str__(self):
         return "\n".join(f"{i}: {list(bucket)}" for i, bucket in enumerate(self.table))
