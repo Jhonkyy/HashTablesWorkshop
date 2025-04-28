@@ -38,15 +38,20 @@ class HashTable:
         return self.table[int(self.size * ((num_key * 0.6180339887 ) % 1))].append((key, value))
 
 
-    def _XORhash(self,key, value):
+    def _XORhash(self,key):
         hashfunc = 0
         for ch in key:
-            hashfunc ^= ord(ch) # se usa ^= pa usar el XOR, comparando uno a uno en binarios
-
+            hashfunc ^= ord(ch) # se usa ^= pa usar el XOR, comparando uno a uno en binarios acumulando el ASCII de cada caracter
         return hashfunc % self.size
 
-    def PersonalicedHash(self, key, value):
-        pass
+    def PersonalicedHash(self, key):
+        encoded_key = key.encode()
+        value = 0
+        for ch in encoded_key:
+            value += ch
+        value *= 401
+        return value % self.size
+
 
     def __str__(self):
         return "\n".join(f"{i}: {list(bucket)}" for i, bucket in enumerate(self.table))
