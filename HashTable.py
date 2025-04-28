@@ -41,8 +41,9 @@ class HashTable:
     def _XORhash(self,key, value):
         hashfunc = 0
         for ch in key:
-            pass
-        pass
+            hashfunc ^= ord(ch) # se usa ^= pa usar el XOR, comparando uno a uno en binarios
+
+        return hashfunc % self.size
 
     def PersonalicedHash(self, key, value):
         pass
