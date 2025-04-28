@@ -18,7 +18,11 @@ class HashTable:
             current_list.insert((key, value))
 
     def search(self, key):
-        return self.table[self._hash(key)]
+        current_list = self.table[self._hash(key)]
+        node = current_list.find(key, key=lambda pair: pair[0])
+        if node:
+            return node.data[1]
+        raise KeyError(f"Key '{key}' not found")
 
     def delete(self, key):
         index = self._hash(key)
