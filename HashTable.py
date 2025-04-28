@@ -75,3 +75,19 @@ def find_duplicated(arr):
         else:
             table.insert(item, f"{item}")
     return duplicated
+
+def count_frequency(arr):
+    frequency_table = HashTable()
+    for item in arr:
+        if frequency_table.search(item) is not None:
+            count = frequency_table.search(item)
+            frequency_table.insert(item, count + 1)
+        else:
+            frequency_table.insert(item, 1)
+
+    result = {}
+    for i in range(frequency_table.size):
+        bucket = frequency_table.table[i]
+        for key, value in bucket:
+            result[key] = value
+    return result
