@@ -34,8 +34,9 @@ class HashTable:
         raise KeyError(f"Key '{key}' not found")
 
     def knuth(self, key, value):
-        self.table[int(self.size * ((key * 0.6180339887 ) % 1))].append((key, value))
-        pass
+        num_key = sum(ord(ch) for ch in key)
+        return self.table[int(self.size * ((num_key * 0.6180339887 ) % 1))].append((key, value))
+
 
     def _XORhash(self,key, value):
         hashfunc = 0
