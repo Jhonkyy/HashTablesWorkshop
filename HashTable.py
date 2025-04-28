@@ -44,7 +44,7 @@ class HashTable:
             hashfunc ^= ord(ch) # se usa ^= pa usar el XOR, comparando uno a uno en binarios acumulando el ASCII de cada caracter
         return hashfunc % self.size
 
-    def PersonalicedHash(self, key):
+    def personaliced_hash(self, key):
         encoded_key = key.encode()
         value = 0
         for ch in encoded_key:
@@ -62,7 +62,16 @@ class HashTable:
         value = int(value_2 // (70/ self.size))
         return value % self.size
 
-
-
     def __str__(self):
         return "\n".join(f"{i}: {list(bucket)}" for i, bucket in enumerate(self.table))
+
+def find_duplicated(arr):
+    duplicated = []
+    table = HashTable()
+    for item in arr:
+        if table.search(item) is not None:
+            if item not in duplicated:
+                duplicated.append(item)
+        else:
+            table.insert(item, f"{item}")
+    return duplicated
