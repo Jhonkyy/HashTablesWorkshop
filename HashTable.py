@@ -1,13 +1,25 @@
+import random
+
 from linked_list import SinglyLinkedList
 
 
 class HashTable:
-    def __init__(self, size = 10):
-        self.size = size
-        self.table = [SinglyLinkedList() for space in range(size)]
 
-    def _hash(self, key) -> int:
-        return hash(key) % self.size
+    def __init__(self, size=10, hash_type='knuth'):
+        self.size = size
+        self.table = [SinglyLinkedList() for _ in range(size)]
+        self.hash_type = hash_type
+
+    def _hash(self, key):
+        if self.hash_type == 'knuth':
+            return self.knuth_hash(key)
+        elif self.hash_type == 'xor':
+            return self.xor_hash(key)
+        elif self.hash_type == 'personalized':
+            return self.personalized_hash(key)
+        else:
+            # Función hash por defecto de Python módulo tamaño
+            return hash(key) % self.size
 
     def insert(self, key, value):
         current_list = self.table[self._hash(key)]
@@ -22,7 +34,7 @@ class HashTable:
         node = current_list.find(key, key=lambda pair: pair[0])
         if node:
             return node.data[1]
-        raise KeyError(f"Key '{key}' not found")
+        return None
 
     def delete(self, key):
         index = self._hash(key)
@@ -33,18 +45,18 @@ class HashTable:
                 return
         raise KeyError(f"Key '{key}' not found")
 
-    def knuth(self, key, value):
+    def knuth_hash(self, key):
         num_key = sum(ord(ch) for ch in key)
-        return self.table[int(self.size * ((num_key * 0.6180339887 ) % 1))].append((key, value))
+        return int(self.size * ((num_key * 0.6180339887) % 1))
 
 
-    def _XORhash(self,key):
+    def xor_hash(self,key):
         hashfunc = 0
         for ch in key:
             hashfunc ^= ord(ch) # se usa ^= pa usar el XOR, comparando uno a uno en binarios acumulando el ASCII de cada caracter
         return hashfunc % self.size
 
-    def personaliced_hash(self, key):
+    def personalized_hash(self, key):
         encoded_key = key.encode()
         value = 0
         for ch in encoded_key:
@@ -84,10 +96,36 @@ def count_frequency(arr):
             frequency_table.insert(item, count + 1)
         else:
             frequency_table.insert(item, 1)
+    return frequency_table
 
-    result = {}
-    for i in range(frequency_table.size):
-        bucket = frequency_table.table[i]
-        for key, value in bucket:
-            result[key] = value
-    return result
+if __name__ == "__main__":
+    #Prueba Hash table
+    tabla = HashTable(10)
+
+
+    tabla.insert("perro", "dog")
+    tabla.insert("gato", "cat")
+    tabla.insert("pajaro", "bird")
+
+    tabla.delete("gato")
+
+
+    print(tabla)
+
+    print("---Prueba ejercicios duplicados y frecuencia---\n")
+
+    #Prueba ejercicios duplicados y frecuencia
+    arr = ["manzana", "pera", "banana", "manzana", "pera", "pera", "kiwi", "banana", "banana"]
+
+    print("Lista original:")
+    print(arr)
+
+    # Encontrar duplicados
+    duplicados = find_duplicated(arr)
+    print("\nDuplicados encontrados:")
+    print(duplicados)
+
+    # Contar frecuencia
+    frecuencias = count_frequency(arr)
+    print("\nFrecuencia de cada elemento:")
+    print(frecuencias)
